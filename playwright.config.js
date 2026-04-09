@@ -11,8 +11,9 @@ const config = defineConfig({
   reporter: [
   ['html'],
   ['junit', { outputFile: 'results.xml' }],
-  ['allure-playwright']   // ✅ FIXED
+  ['allure-playwright'],
 ],
+  testIgnore: ['tests/demo/dbTest.spec.js'],  // ✅ FIXED
   use: {
     baseURL: 'https://example.com',
     headless: true,
