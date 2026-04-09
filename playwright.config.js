@@ -9,11 +9,10 @@ const config = defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: [
-    ['line'],
-    ['html', { outputFolder: 'reports/html-report', open: 'never' }],
-    ['allure-playwright']
-    ['junit', { outputFile: 'results.xml' }]
-  ],
+  ['html'],
+  ['junit', { outputFile: 'results.xml' }],
+  ['allure-playwright']   // ✅ FIXED
+],
   use: {
     baseURL: 'https://example.com',
     headless: true,

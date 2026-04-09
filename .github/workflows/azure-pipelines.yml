@@ -4,6 +4,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  BASE_URL: https://staging-app.com
+
 steps:
 
 - task: NodeTool@0
@@ -11,29 +14,20 @@ steps:
     versionSpec: '18.x'
   displayName: 'Install Node.js'
 
-- script: |
-    npm ci
+- script: npm ci
   displayName: 'Install dependencies'
 
-- script: |
-    npx playwright install --with-deps
+- script: npx playwright install --with-deps
   displayName: 'Install Playwright Browsers'
 
+# ✅ Run tests ONLY ONCE with proper config
 - script: |
-    npx playwright test
+    npx playwright test --workers=4 --project=chromium
   displayName: 'Run Playwright Tests'
-
-- script: |
-    npx playwright test --workers=4
-
-- script: |
-    npx playwright test --project=chromium
-
-- script: |
-    npx playwright test
   env:
-    BASE_URL: https://staging-app.com
+    BASE_URL: $(BASE_URL)
 
+# ✅ Publish Results
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
@@ -41,8 +35,11 @@ steps:
     failTaskOnFailedTests: true
   condition: succeededOrFailed()
 
+# ✅ Publish HTML Report
 - task: PublishBuildArtifacts@1
   inputs:
     pathToPublish: 'playwright-report'
     artifactName: 'PlaywrightReport'
   condition: succeededOrFailed()
+
+# ✅ Publish Allure Report
