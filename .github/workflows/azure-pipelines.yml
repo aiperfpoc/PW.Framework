@@ -1,0 +1,48 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm ci
+  displayName: 'Install dependencies'
+
+- script: |
+    npx playwright install --with-deps
+  displayName: 'Install Playwright Browsers'
+
+- script: |
+    npx playwright test
+  displayName: 'Run Playwright Tests'
+
+- script: |
+    npx playwright test --workers=4
+
+- script: |
+    npx playwright test --project=chromium
+
+- script: |
+    npx playwright test
+  env:
+    BASE_URL: https://staging-app.com
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/results.xml'
+    failTaskOnFailedTests: true
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: 'playwright-report'
+    artifactName: 'PlaywrightReport'
+  condition: succeededOrFailed()

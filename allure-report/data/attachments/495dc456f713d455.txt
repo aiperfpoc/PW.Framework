@@ -1,0 +1,6 @@
+{
+  title: 'Playwright Testing',
+  body: 'Learning POST API testing',
+  userId: 1,
+  id: 101
+}
