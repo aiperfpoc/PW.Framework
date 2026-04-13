@@ -10,6 +10,7 @@ const config = defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [
   ['html'],
+  ['list'],
   ['junit', { outputFile: 'results.xml' }],
   ['allure-playwright'],
 ],
