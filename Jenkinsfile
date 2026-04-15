@@ -37,11 +37,15 @@ pipeline {
     }
   }
 
-  post {
-    always {
-      junit '**/results.xml'
-      archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true
-      archiveArtifacts artifacts: 'allure-report/**', fingerprint: true
+post {
+  always {
+    script {
+      if (fileExists('results.xml')) {
+        junit '**/results.xml'
+      }
     }
+    archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true, allowEmptyArchive: true
+    archiveArtifacts artifacts: 'allure-report/**', fingerprint: true, allowEmptyArchive: true
   }
+}
 }
