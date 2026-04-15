@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        git 'Default-Git'
+    }
+
     stages {
         stage('Install Dependencies') {
             steps {
