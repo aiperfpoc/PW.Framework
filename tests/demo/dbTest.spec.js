@@ -7,7 +7,7 @@ test('Validate user from DB', async () => {
     "SELECT * FROM users WHERE username = 'tomsmith'"
   );
 
-  console.log(result);
+  //console.log(result);
 
   expect(result.length).toBeGreaterThan(0);
 });

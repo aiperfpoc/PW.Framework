@@ -7,7 +7,7 @@ test("API Post Request Test", async ({ page }) => {
     expect(response.status()).toBe(201);
     const json = await response.json();
     expect(json.title).toBe("Playwright Testing");
-    console.log(json);
+    //console.log(json);
 });
 
 test("API Get Request Test", async ({request}) => {
@@ -16,5 +16,5 @@ test("API Get Request Test", async ({request}) => {
     const text = await response.text();
     expect(text).toContain("JSONPlaceholder - Free Fake REST API");
     const responseBody = await response.text();
-    console.log(responseBody);
+    //console.log(responseBody);
 })

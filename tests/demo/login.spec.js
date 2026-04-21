@@ -8,7 +8,7 @@ parse(fs.readFileSync('./testdata/userInfo.csv'), {
     columns: true,
     skip_empty_lines: true
 }, function(err, records) {
-    console.log('CSV Data:', records);
+    //console.log('CSV Data:', records);
 });
 
 test('test', async ({ page }) => {

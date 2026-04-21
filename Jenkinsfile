@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/aiperfpoc/PW.Framework/'
+        git 'https://github.com/aiperfpoc/PW.Framework/.git'
       }
     }
 
