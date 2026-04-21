@@ -3,7 +3,6 @@ pipeline {
     agent any
  
     tools {
- 
         nodejs 'NodeJS'
     }
  
@@ -11,14 +10,12 @@ pipeline {
  
         stage('Checkout SCM') {
             steps {
-                
                 checkout scm
             }
         }
  
         stage('Install Dependencies') {
             steps {
-                
                 bat 'npm ci'
             }
         }
@@ -34,26 +31,16 @@ pipeline {
                 bat 'npx playwright test'
             }
         }
- 
-        stage('Allure Report') {
-            steps {
-                
-                bat '''
-                if exist allure-results (
-                    allure generate allure-results --clean -o allure-report
-                ) else (
-                    echo "No allure-results found, skipping report generation"
-                )
-                '''
-            }
-        }
     }
  
     post {
         always {
-            // Archive Playwright test results if present
-            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'allure-report/**', allowEmptyArchive: true
+      
+            allure(
+                includeProperties: false,
+                reportBuildPolicy: 'ALWAYS',
+                results: [[path: 'allure-results']]
+            )
         }
  
         success {
@@ -61,7 +48,7 @@ pipeline {
         }
  
         failure {
-            echo 'Jenkins pipeline failed'
+            echo ' Jenkins pipeline failed'
         }
     }
 }
