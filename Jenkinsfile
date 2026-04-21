@@ -1,14 +1,14 @@
 pipeline {
-  agent any
+    agent any
 
-  tools {
-    nodejs 'NodeJS'
-  }
+    tools {
+        git 'Default-Git'
+    }
 
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/aiperfpoc/PW.Framework/.git'
+        git 'https://github.com/aiperfpoc/PW.Framework/'
       }
     }
 
@@ -18,30 +18,22 @@ pipeline {
       }
     }
 
-    stage('Install Browsers') {
-      steps {
-        sh 'npx playwright install --with-deps'
-      }
-    }
+        stage('Install Browsers') {
+            steps {
+                bat 'npx playwright install'
+            }
+        }
 
-    stage('Run Tests') {
-      steps {
-        sh 'npx playwright test'
-      }
-    }
+        stage('Run Tests') {
+            steps {
+                bat 'npx playwright test'
+            }
+        }
 
-    stage('Generate Allure Report') {
-      steps {
-        sh 'npx allure generate allure-results --clean -o allure-report'
-      }
+        stage('Allure Report') {
+            steps {
+                bat 'allure generate ./allure-results --clean -o ./allure-report'
+            }
+        }
     }
-  }
-
-  post {
-    always {
-      junit 'results.xml'
-      archiveArtifacts artifacts: 'playwright-report/**'
-      archiveArtifacts artifacts: 'allure-report/**'
-    }
-  }
 }
